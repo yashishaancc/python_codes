@@ -1,4 +1,6 @@
 import pygame
+import sys
+from time import sleep
 from random import randint
 class Settings():
 	"""A class to store all settings of चर-भर"""
@@ -73,8 +75,8 @@ def check_events(settings, screen, centre, red, blue, move, bhar, count):
 		if event.type == pygame.KEYUP:
 			check_keyup_events(event)
 		if event.type == pygame.MOUSEBUTTONDOWN:
-			check_mouse_events(settings, event, screen, centre, red, blue, move, bhar, 
-			count)
+			check_mouse_events(settings, event, screen, centre, red, blue, move,
+			bhar, count)
 def movable(move, i):
 	"""if move is valid return true"""
 	if (move[0] == 1 and (i == 2 or i == 10) or
@@ -241,30 +243,30 @@ def draw_board(settings, screen, centre, red, blue, move, bhar, count):
 	if count[0] < 18 and (n == 0 or n == 1 and count[0]%2 == 0):
 		while True:
 			rand = randint(1,24)
-			print("rand = "+str(rand))
+			# print("rand = "+str(rand))
 			if bhar[0] == 2 and count[0]%2 == 0 and n == 1:
 				break
 			elif bhar[0]:
-				print("Bhar before")
+				# print("Bhar before")
 				if (bhar[0] == 1 and blue[rand] and
 					not is_bhar(rand, red, blue, 2)):
-					print("Bhar red")
+					# print("Bhar red")
 					blue[rand] = False
 					bhar[0] = 0
 					break
 				elif(bhar[0] == 2 and red[rand] and
 					not is_bhar(rand, red, blue, 1)):
-					print("Bhar blue")
+					# print("Bhar blue")
 					red[rand] = False
 					bhar[0] = 0
 					break
 			elif count[0]%2 == 0 and red[rand] == 0 and blue[rand] == 0:
 				print(count[0]/2+1)
-				print("Red")
+				# print("Red")
 				red[rand] = True
 				count[0] += 1
 				if is_bhar(rand, red, blue, 1):
-					print("Red bhar")
+					# print("Red bhar")
 					bhar[0] = 1
 					continue
 				break
@@ -277,20 +279,20 @@ def draw_board(settings, screen, centre, red, blue, move, bhar, count):
 	if count[0] >= 18 and (n == 0 or n == 1 and count[0]%2 == 0):
 		while True:
 			rand = randint(1,24)
-			print("rand = "+str(rand))
+			# print("rand = "+str(rand))
 			if bhar[0] == 2 and count[0]%2 == 0 and n == 1:
 				break
 			elif bhar[0]:
-				print("Bhar after")
+				# print("Bhar after")
 				if (bhar[0] == 1 and blue[rand] and
 					not is_bhar(rand, red, blue, 2)):
-					print("Bhar red")
+					# print("Bhar red")
 					blue[rand] = False
 					bhar[0] = 0
 					break
 				elif(bhar[0] == 2 and red[rand] and
 					not is_bhar(rand, red, blue, 1)):
-					print("Bhar blue")
+					# print("Bhar blue")
 					red[rand] = False
 					bhar[0] = 0
 					break
@@ -301,7 +303,7 @@ def draw_board(settings, screen, centre, red, blue, move, bhar, count):
 					move[0] = 0
 					count[0] += 1
 					if count[0]%2 == 0:
-						print("Move red from "+str(move[0])+" to "+rand)
+						# print("Move red from "+str(move[0])+" to "+rand)
 						red[rand] = True
 						red[move[0]] = False
 						if is_bhar(i, red, blue, 1):
@@ -315,7 +317,7 @@ def draw_board(settings, screen, centre, red, blue, move, bhar, count):
 					break
 			elif count[0]%2 == 0 and red[rand]:
 				print(count[0]/2+1)
-				print("Red")
+				# print("Red")
 				move[0] = rand
 				break
 			elif count[0]%2 == 1 and blue[rand]:
@@ -325,14 +327,23 @@ def draw_board(settings, screen, centre, red, blue, move, bhar, count):
 		font = pygame.font.SysFont(None, 200)
 		if r < 3:
 			text = font.render('Blue wins', True, (0,0,255), (255,0,0))
-			text_rect = text.get_rect()
-			text_rect.center = cen
-			screen.blit(text, text_rect)
 		if b < 3:
 			text = font.render('Red wins', True, (255,0,0), (0,0,255))
-			text_rect = text.get_rect()
-			text_rect.center = cen
-			screen.blit(text, text_rect)
+		text_rect = text.get_rect()
+		text_rect.center = cen
+		screen.blit(text, text_rect)
+		pygame.display.flip()
+		sleep(5)
+		text = font.render('Replay in 3 sec', True, (0,255,0), (255,0,0))
+		text_rect = text.get_rect()
+		text_rect.center = cen
+		screen.blit(text, text_rect)
+		pygame.display.flip()
+		sleep(3)
+		for i in range(25):
+			red[i] = False
+			blue[i] = False
+		count[0] = 0; move[0] = 0; bhar[0] = 0;
 def set_centre(settings, screen):
 	"""set centre dimensions of all 24 places"""
 	screen_rect = screen.get_rect()
@@ -368,3 +379,5 @@ def run_game():
 		draw_board(settings, screen, centre, red, blue, move, bhar, count)
 		pygame.display.flip()
 run_game()
+# मेरा नाम आशिष है।
+# मेरा नाम आशिष है।

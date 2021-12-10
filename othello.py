@@ -1,4 +1,5 @@
 import pygame
+import sys
 from random import randint
 class Settings():
 	def __init__(self):
@@ -22,7 +23,7 @@ def check_events(settings, ball, count):
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			check_mouse_events(settings, event, ball, count)
 def check_keydown_events(event):
-	if event.key == pygame.KEY_q:
+	if event.key == pygame.K_q:
 		sys.exit()
 def check_keyup_events(event):
 	return
@@ -46,9 +47,10 @@ def is_valid(settings, ball, row, column, count):
 		ball[(row-1)*c+column] = 2
 	change = 0;
 	i = row-1; j = column-1;
-	while i >= 1 and column >= 1:# north-west
+	while i >= 1 and j >= 1:# north-west
 		if not i == row-1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 			change = 1
+			print("north-west")
 			i += 1; j += 1;
 			while i < row and j < column:
 				ball[(i-1)*c+j] = ball[(row-1)*c+column]
@@ -63,6 +65,7 @@ def is_valid(settings, ball, row, column, count):
 	while i <= r and j <= c:# south-east
 		if not i == row+1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 			change = 1
+			print("south-east")
 			i -= 1; j -= 1;
 			while i > row and j > column:
 				ball[(i-1)*c+j] = ball[(row-1)*c+column]
@@ -77,6 +80,7 @@ def is_valid(settings, ball, row, column, count):
 	while i >= 1 and j <= c:# north-east
 		if not i == row-1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 			change = 1
+			print("north-east")
 			i += 1; j -= 1;
 			while i < row and j > column:
 				ball[(i-1)*c+j] = ball[(row-1)*c+column]
@@ -88,9 +92,10 @@ def is_valid(settings, ball, row, column, count):
 			break
 		i -= 1; j += 1;
 	i = row+1; j = column-1;
-	while i <= r and j >= 0:# south-west
+	while i <= r and j >= 1:# south-west
 		if not i == row+1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 			change = 1
+			print("south-west")
 			i -= 1; j += 1;
 			while i > row and j < column:
 				ball[(i-1)*c+j] = ball[(row-1)*c+column]
@@ -102,9 +107,10 @@ def is_valid(settings, ball, row, column, count):
 			break
 		i += 1; j -= 1;
 	i = row-1; j = column;
-	while i >= 0:# north
+	while i >= 1:# north
 		if not i == row-1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 			change = 1
+			print("north")
 			i += 1;
 			while i < row:
 				ball[(i-1)*c+j] = ball[(row-1)*c+column]
@@ -119,6 +125,7 @@ def is_valid(settings, ball, row, column, count):
 	while i <= r:# south
 		if not i == row+1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 			change = 1
+			print("south")
 			i -= 1;
 			while i > row:
 				ball[(i-1)*c+j] = ball[(row-1)*c+column]
@@ -133,6 +140,7 @@ def is_valid(settings, ball, row, column, count):
 	while j <= c:# east
 		if not j == column+1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 			change = 1
+			print("east")
 			j -= 1;
 			while j > column:
 				ball[(i-1)*c+j] = ball[(row-1)*c+column]
@@ -144,9 +152,10 @@ def is_valid(settings, ball, row, column, count):
 			break
 		j += 1;
 	i = row; j = column-1;
-	while j >= 0:# west
+	while j >= 1:# west
 		if j != column-1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 			change = 1
+			print("west")
 			j += 1;
 			while j < column:
 				ball[(i-1)*c+j] = ball[(row-1)*c+column]
@@ -161,8 +170,20 @@ def is_valid(settings, ball, row, column, count):
 		ball[(row-1)*c+column] = 0
 		return False
 	else:
+		print_board(settings, ball)
 		count[0] += 1
 		return True
+def print_board(settings, ball):
+	r = settings.number_of_rows; c = settings.number_of_columns;
+	for i in range(1,r+1):
+		for j in range(1,c+1):
+			if ball[(i-1)*c+j] == 0:
+				print(ball[(i-1)*c+j], end = " ")
+			if ball[(i-1)*c+j] == 1:
+				print(f"\x1b[31m{ball[(i-1)*c+j]}\x1b[0m", end = " ")
+			if ball[(i-1)*c+j] == 2:
+				print(f"\x1b[34m{ball[(i-1)*c+j]}\x1b[0m", end = " ")
+		print()
 def draw_board(settings, screen, ball, count):
 	if count[0]%2 == 0:
 		screen.fill(settings.red_color)
@@ -192,7 +213,7 @@ def draw_board(settings, screen, ball, count):
 					ball[(row-1)*c+column] = 2
 				change = 0;
 				i = row-1; j = column-1;
-				while i >= 1 and column >= 1:# north-west
+				while i >= 1 and j >= 1:# north-west
 					if i != row-1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 						change = 1
 						break
@@ -222,7 +243,7 @@ def draw_board(settings, screen, ball, count):
 						break
 					i -= 1; j += 1;
 				i = row+1; j = column-1;
-				while i <= r and j >= 0:# south-west
+				while i <= r and j >= 1:# south-west
 					if i != row+1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 						change = 1
 						break
@@ -232,7 +253,7 @@ def draw_board(settings, screen, ball, count):
 						break
 					i += 1; j -= 1;
 				i = row-1; j = column;
-				while i >= 0:# north
+				while i >= 1:# north
 					if i != row-1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 						change = 1
 						break
@@ -262,7 +283,7 @@ def draw_board(settings, screen, ball, count):
 						break
 					j += 1;
 				i = row; j = column-1;
-				while j >= 0:# west
+				while j >= 1:# west
 					if j != column-1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 						change = 1
 						break
@@ -293,7 +314,7 @@ def draw_board(settings, screen, ball, count):
 					rad, 0)
 	flag = 0; v = 0; cnt = 0; rcnt = 0; bcnt = 0;
 	for row in range(1,r+1):
-		for column in range(1,c+1):
+		for column in range(1,c+1):	
 			if ball[(row-1)*c+column]:
 				cnt += 1
 				if ball[(row-1)*c+column] == 1:
@@ -307,7 +328,7 @@ def draw_board(settings, screen, ball, count):
 				ball[(row-1)*c+column] = 2
 			change = 0;
 			i = row-1; j = column-1;
-			while i >= 1 and column >= 1:# north-west
+			while i >= 1 and j >= 1:# north-west
 				if i != row-1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 					change = 1
 					break
@@ -337,7 +358,7 @@ def draw_board(settings, screen, ball, count):
 					break
 				i -= 1; j += 1;
 			i = row+1; j = column-1;
-			while i <= r and j >= 0:# south-west
+			while i <= r and j >= 1:# south-west
 				if i != row+1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 					change = 1
 					break
@@ -347,7 +368,7 @@ def draw_board(settings, screen, ball, count):
 					break
 				i += 1; j -= 1;
 			i = row-1; j = column;
-			while i >= 0:# north
+			while i >= 1:# north
 				if i != row-1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 					change = 1
 					break
@@ -377,7 +398,7 @@ def draw_board(settings, screen, ball, count):
 					break
 				j += 1;
 			i = row; j = column-1;
-			while j >= 0:# west
+			while j >= 1:# west
 				if j != column-1 and ball[(i-1)*c+j] == ball[(row-1)*c+column]:
 					change = 1
 					break

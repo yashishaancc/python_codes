@@ -16,9 +16,9 @@ def check_keydown_events(event):
 	if event.key == pygame.K_q:
 		sys.exit()
 	if event.key == pygame.K_DOWN:
-		multiplier *= 2
+		multiplier /= 1.5
 	if event.key == pygame.K_UP:
-		multiplier /= 2
+		multiplier *= 1.5
 def check_keyup_events(event):
 	return
 def check_mouse_events(event):
@@ -33,7 +33,7 @@ def draw_ball(screen, count):
 	if (400+count[0]%1440 <= 760):
 		y = 400+count[0]%1440
 	elif (400+count[0]%1440 <= 760+720):
-		y = 760-count[0]%1440+360 
+		y = 760-count[0]%1440+360
 	else:
 		y = count[0]%1440-360-720
 	screen.fill((0,0,0))

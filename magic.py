@@ -19,4 +19,5 @@ for i in range(n):
     if c == 'Y' or c == 'y':
         num += 2**i
 print("I know that if you think your number in your chosen range then,");
-print("The number you think is \x1b[32m\x1b[5m" + str(num) + "\a");
+# print("The number you think is \x1b[32m\x1b[5m" + str(num) + "\a");
+print(f"The number you think is \x1b[32m\x1b[5m{num}\a");

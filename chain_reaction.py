@@ -1,4 +1,6 @@
 import pygame
+import sys
+from time import sleep
 from random import randint
 class Settings():
 	def __init__(self):
@@ -22,7 +24,7 @@ def check_events(settings, ball, count):
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			check_mouse_events(settings, event, ball, count)
 def check_keydown_events(event):
-	if event.key == pygame.KEY_q:
+	if event.key == pygame.K_q:
 		sys.exit()
 def check_keyup_events(event):
 	return
