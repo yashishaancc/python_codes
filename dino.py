@@ -168,11 +168,12 @@ def draw_board(settings, screen, player, clouds, font, bg, x_pos_bg, y_pos_bg,
 	player.draw(screen)
 	player.update(user_input)
 	if len(obstacles) == 0:
-		if rand(0,2) == 0:
+		r = rand(0,2)
+		if r == 0:
 			obstacles.append(SmallCactus(settings, small_cactus))
-		elif rand(0,2) == 1:
+		elif r == 1:
 			obstacles.append(LargeCactus(settings, large_cactus))
-		elif rand(0,2) == 2:
+		elif r == 2:
 			obstacles.append(Bird(settings, bird))
 	for obstacle in obstacles:
 		obstacle.draw(screen)
@@ -255,4 +256,6 @@ def run_game():
 				bird, running, run, death_count, game_speed)
 		clock.tick(30)
 		pygame.display.flip()
-run_game()
+
+if __name__=="__main__":
+	run_game()
