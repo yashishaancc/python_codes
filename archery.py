@@ -118,7 +118,7 @@ def draw_board(screen, balloon, balloon_burst, arrow, balloons, balloon_x,
 		score[0] += 1
 		if highscore[0] < score[0]:
 			highscore[0] = score[0]
-		game_speed[0] += 1
+		game_speed[0] += 0.5
 		balloon_burst_rect = balloon_burst.get_rect()
 		balloon_burst_rect.center = (balloon_x[0], balloon_y[0])
 		screen.blit(balloon_burst, balloon_burst_rect)
