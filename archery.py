@@ -42,7 +42,7 @@ def check_mouse_events(event):
 	return
 def draw_board(screen, balloon, balloon_burst, arrow, balloons, balloon_x,
 	balloon_y, arrow_x, arrow_y, game_speed, move, move_up, move_down, font,
-	score, skip, count):
+	score, highscore,skip, count):
 	screen.fill((255,200,2))
 	count[0] += 1
 	balloon_rect = balloon.get_rect()
@@ -115,6 +115,8 @@ def draw_board(screen, balloon, balloon_burst, arrow, balloons, balloon_x,
 		balloon_rect.left <= arrow_rect.right and
 		balloon_rect.right >= arrow_rect.right):
 		score[0] += 1
+		if highscore[0] < score[0]:
+			highscore[0] = score[0]
 		balloon_burst_rect = balloon_burst.get_rect()
 		balloon_burst_rect.center = (balloon_x[0], balloon_y[0])
 		screen.blit(balloon_burst, balloon_burst_rect)
@@ -133,6 +135,10 @@ def draw_board(screen, balloon, balloon_burst, arrow, balloons, balloon_x,
 	text_rect = text.get_rect()
 	text_rect.center = (1350,40)
 	screen.blit(text, text_rect)
+	text = font.render("High Score: "+str(highscore[0]), True, (0,0,0))
+	text_rect = text.get_rect()
+	text_rect.center = (720,40)
+	screen.blit(text, text_rect)
 	text = font.render("Arrows left: "+str(10-skip[0]), True, (0,0,0))
 	text_rect = text.get_rect()
 	text_rect.center = (100,40)
@@ -147,6 +153,7 @@ def run_game():
 	move_up = [False]
 	move_down = [False]
 	score = [0]
+	highscore = [0]
 	skip = [0]
 	balloon_x = [1300]
 	balloon_y = [800]
@@ -162,7 +169,7 @@ def run_game():
 		check_events(move, move_up, move_down)
 		draw_board(screen, balloon, balloon_burst, arrow, balloons, balloon_x,
 			balloon_y, arrow_x, arrow_y, game_speed, move, move_up, move_down,
-			font, score, skip, count)
+			font, score, highscore, skip, count)
 		clock.tick(60)
 		pygame.display.flip()
 run_game()
