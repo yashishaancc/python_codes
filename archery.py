@@ -1,18 +1,19 @@
 import pygame
+from pygame import mixer
 import sys
 from random import randint as rand
-class Balloon():
-	def __init__(self, image):
-		self.image = image
-		self.rect = self.image.get_rect()
-		self.rect.x = 1300
-		self.rect.y = 800
-	def update(self, game_speed, balloons):
-		self.rect.y -= game_speed[0]
-		if self.rect.y <= -self.rect.height:
-			balloons.pop()
-	def draw(self, screen):
-		screen.blit(self.image, self.rect)
+# class Balloon():
+# 	def __init__(self, image):
+# 		self.image = image
+# 		self.rect = self.image.get_rect()
+# 		self.rect.x = 1300
+# 		self.rect.y = 800
+# 	def update(self, game_speed, balloons):
+# 		self.rect.y -= game_speed[0]
+# 		if self.rect.y <= -self.rect.height:
+# 			balloons.pop()
+# 	def draw(self, screen):
+# 		screen.blit(self.image, self.rect)
 def check_events(move, move_up, move_down):
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
@@ -52,6 +53,10 @@ def draw_board(screen, balloon, balloon_burst, arrow, balloons, balloon_x,
 	arrow_rect = arrow.get_rect()
 	arrow_rect.center = (arrow_x[0], arrow_y[0])
 	if move[0]:
+		if arrow_x[0] == 200:
+			mixer.init()
+			mixer.music.load('sounds/arrow.mp3')
+			mixer.music.play()
 		arrow_x[0] += 5*game_speed[0]
 	elif move_up[0]:
 		arrow_y[0] -= 1*game_speed[0]
@@ -68,7 +73,7 @@ def draw_board(screen, balloon, balloon_burst, arrow, balloons, balloon_x,
 		skip[0] += 1
 	if skip[0] >= 10:
 		font = pygame.font.Font('freesansbold.ttf', 100)
-		text = font.render("Game Over\nReplay in 3 sec", True, (0,0,0))
+		text = font.render("Game Over", True, (0,0,0))
 		text_rect = text.get_rect()
 		text_rect.center = (720,400)
 		screen.blit(text, text_rect)
@@ -114,6 +119,9 @@ def draw_board(screen, balloon, balloon_burst, arrow, balloons, balloon_x,
 		balloon_burst_rect.center = (balloon_x[0], balloon_y[0])
 		screen.blit(balloon_burst, balloon_burst_rect)
 		pygame.display.flip()
+		mixer.init()
+		mixer.music.load('sounds/pop.mp3')
+		mixer.music.play()
 		pygame.time.delay(500)
 		balloon_y[0] = rand(700,1400)
 		arrow_x[0] = 200
@@ -124,6 +132,10 @@ def draw_board(screen, balloon, balloon_burst, arrow, balloons, balloon_x,
 	text = font.render("Score: "+str(score[0]), True, (0,0,0))
 	text_rect = text.get_rect()
 	text_rect.center = (1350,40)
+	screen.blit(text, text_rect)
+	text = font.render("Arrows left: "+str(10-skip[0]), True, (0,0,0))
+	text_rect = text.get_rect()
+	text_rect.center = (100,40)
 	screen.blit(text, text_rect)
 def run_game():
 	pygame.init()
