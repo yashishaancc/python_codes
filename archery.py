@@ -2,18 +2,6 @@ import pygame
 from pygame import mixer
 import sys
 from random import randint as rand
-# class Balloon():
-# 	def __init__(self, image):
-# 		self.image = image
-# 		self.rect = self.image.get_rect()
-# 		self.rect.x = 1300
-# 		self.rect.y = 800
-# 	def update(self, game_speed, balloons):
-# 		self.rect.y -= game_speed[0]
-# 		if self.rect.y <= -self.rect.height:
-# 			balloons.pop()
-# 	def draw(self, screen):
-# 		screen.blit(self.image, self.rect)
 def check_events(move, move_up, move_down):
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
@@ -40,18 +28,7 @@ def check_keyup_events(event, move_up, move_down):
 		move_down[0] = False
 def check_mouse_events(event):
 	return
-def draw_board(screen, balloon, balloon_burst, arrow, balloons, balloon_x,
-	balloon_y, arrow_x, arrow_y, game_speed, move, move_up, move_down, font,
-	score, highscore,skip, count):
-	screen.fill((255,200,2))
-	count[0] += 1
-	balloon_rect = balloon.get_rect()
-	balloon_rect.center = (balloon_x[0], balloon_y[0])
-	balloon_y[0] -= 2*game_speed[0]
-	if balloon_y[0] < -100:
-		balloon_y[0] = rand(700,1400)
-	arrow_rect = arrow.get_rect()
-	arrow_rect.center = (arrow_x[0], arrow_y[0])
+def update_arrow(move, move_up, move_down, arrow_x, arrow_y, skip, game_speed):
 	if move[0]:
 		if arrow_x[0] == 200:
 			mixer.init()
@@ -68,71 +45,70 @@ def draw_board(screen, balloon, balloon_burst, arrow, balloons, balloon_x,
 			arrow_y[0] = 0
 	if arrow_x[0] > 1500:
 		arrow_x[0] = 200
-		# arrow_y[0] = 400
 		move[0] = False
 		skip[0] += 1
+def balloon_pop(screen, score, highscore, game_speed, balloon_burst, balloon_x,
+	balloon_y, arrow_x, move):
+	score[0] += 1
+	if highscore[0] < score[0]:
+		highscore[0] = score[0]
+	game_speed[0] += 0.5
+	balloon_burst_rect = balloon_burst.get_rect()
+	balloon_burst_rect.center = (balloon_x[0], balloon_y[0])
+	screen.blit(balloon_burst, balloon_burst_rect)
+	pygame.display.flip()
+	mixer.init()
+	mixer.music.load('sounds/pop.mp3')
+	mixer.music.play()
+	pygame.time.delay(500)
+	balloon_y[0] = rand(700,1400)
+	arrow_x[0] = 200
+	move[0] = False
+def game_over(screen, score, game_speed, skip, balloon_x, balloon_y, arrow_x,
+	arrow_y):
+	font = pygame.font.Font('freesansbold.ttf', 100)
+	text = font.render("Game Over", True, (0,0,0))
+	text_rect = text.get_rect()
+	text_rect.center = (720,400)
+	screen.blit(text, text_rect)
+	score_text = font.render("Score: "+str(score[0]), True, (0,0,0))
+	score_rect = score_text.get_rect()
+	score_rect.center = (720,500)
+	screen.blit(score_text, score_rect)
+	font = pygame.font.Font('freesansbold.ttf', 20)
+	pygame.display.flip()
+	pygame.time.delay(3000)
+	score[0] = 0
+	game_speed[0] = 10
+	skip[0] = 0
+	balloon_x[0] = 1300
+	balloon_y[0] = 800
+	arrow_x[0] = 200
+	arrow_y[0] = 400
+def draw_board(screen, balloon, balloon_burst, arrow, balloons, balloon_x,
+	balloon_y, arrow_x, arrow_y, game_speed, move, move_up, move_down, font,
+	score, highscore,skip, count):
+	screen.fill((255,200,2))
+	count[0] += 1
+	balloon_rect = balloon.get_rect()
+	balloon_rect.center = (balloon_x[0], balloon_y[0])
+	balloon_y[0] -= 2*game_speed[0]
+	if balloon_y[0] < -100:
+		balloon_y[0] = rand(700,1400)
+	arrow_rect = arrow.get_rect()
+	arrow_rect.center = (arrow_x[0], arrow_y[0])
+	update_arrow(move, move_up, move_down, arrow_x, arrow_y, skip, game_speed)
 	if skip[0] >= 10:
-		font = pygame.font.Font('freesansbold.ttf', 100)
-		text = font.render("Game Over", True, (0,0,0))
-		text_rect = text.get_rect()
-		text_rect.center = (720,400)
-		screen.blit(text, text_rect)
-		score_text = font.render("Score: "+str(score[0]), True, (0,0,0))
-		score_rect = score_text.get_rect()
-		score_rect.center = (720,500)
-		screen.blit(score_text, score_rect)
-		font = pygame.font.Font('freesansbold.ttf', 20)
-		pygame.display.flip()
-		pygame.time.delay(3000)
-		score[0] = 0
-		game_speed[0] = 10
-		skip[0] = 0
-		balloon_x[0] = 1300
-		balloon_y[0] = 800
-		arrow_x[0] = 200
-		arrow_y[0] = 400
-	# if len(balloons) <= 0:
-	# 	balloons.append(Balloon(balloon))
-	# for balloon in balloons:
-	# 	balloon.draw(screen)
-	# 	balloon.update(game_speed, balloons)
-	# 	if (balloon.rect.top <= arrow_rect.top and 
-	# 		balloon.rect.top+200 >= arrow_rect.bottom and
-	# 		balloon.rect.left <= arrow_rect.right and
-	# 		balloon.rect.right >= arrow_rect.right):
-	# 		score[0] += 1
-	# 		balloon_burst_rect = balloon_burst.get_rect()
-	# 		balloon_burst_rect.center = (balloon.rect.x, balloon.rect.y)
-	# 		screen.blit(balloon_burst, balloon_burst_rect)
-	# 		pygame.display.flip()
-	# 		pygame.time.delay(1000)
-	# 		balloon_y[0] = 700
-	# 		arrow_x[0] = 200
-	# 		move[0] = False
+		game_over(screen, score, game_speed, skip, balloon_x, balloon_y,
+			arrow_x, arrow_y)
 	screen.blit(balloon, balloon_rect)
 	screen.blit(arrow, arrow_rect)
 	if (balloon_rect.top <= arrow_rect.top and 
 		balloon_rect.top+200 >= arrow_rect.bottom and
 		balloon_rect.left <= arrow_rect.right and
 		balloon_rect.right >= arrow_rect.right):
-		score[0] += 1
-		if highscore[0] < score[0]:
-			highscore[0] = score[0]
-		game_speed[0] += 0.5
-		balloon_burst_rect = balloon_burst.get_rect()
-		balloon_burst_rect.center = (balloon_x[0], balloon_y[0])
-		screen.blit(balloon_burst, balloon_burst_rect)
-		pygame.display.flip()
-		mixer.init()
-		mixer.music.load('sounds/pop.mp3')
-		mixer.music.play()
-		pygame.time.delay(500)
-		balloon_y[0] = rand(700,1400)
-		arrow_x[0] = 200
-		move[0] = False
-	# score[0] += 1
-	# if score[0]%10 == 0:
-		# game_speed[0] += 1
+		balloon_pop(screen, score, highscore, game_speed, balloon_burst,
+			balloon_x, balloon_y, arrow_x, move)
 	text = font.render("Score: "+str(score[0]), True, (0,0,0))
 	text_rect = text.get_rect()
 	text_rect.center = (1350,40)

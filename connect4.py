@@ -151,13 +151,13 @@ def draw_board(settings, screen, ball, count):
 		flag = 3
 	if(flag == 1 or flag == 2):
 		ball[0] = 1
-		font = pygame.font.SysFont(None, 200)
+		font = pygame.font.Font(None, 200)
 		if flag == 3:
-			text = font.render('Game draw', True, (0,0,255), (255,0,0))
+			text = font.render('Game draw', True, (0,0,255))
 		if flag == 2:
-			text = font.render('Blue wins', True, (0,0,255), (255,0,0))
+			text = font.render('Blue wins', True, (0,0,255))
 		if flag == 1:
-			text = font.render('Red wins', True, (255,0,0), (0,0,255))
+			text = font.render('Red wins', True, (255,0,0))
 		text_rect = text.get_rect()
 		text_rect.center = cen
 		screen.blit(text, text_rect)

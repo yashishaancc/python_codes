@@ -11,7 +11,7 @@ class Settings():
 		self.number_of_rows = 8
 		self.number_of_columns = 8
 		self.box_size = 50
-		self.number_of_players = 2
+		self.number_of_players = 0
 def check_events(settings, ball, count):
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
@@ -427,13 +427,13 @@ def draw_board(settings, screen, ball, count):
 			flag = 3
 	if(flag == 1 or flag == 2 or flag == 3):
 		ball[0] = 1
-		font = pygame.font.SysFont(None, 100)
+		font = pygame.font.Font(None, 100)
 		if flag == 3:
-			text = font.render('Game draw', True, (0,255,0), (255,0,255))
+			text = font.render('Game draw', True, (0,255,0))
 		if flag == 2:
-			text = font.render('Blue wins', True, (0,0,255), (255,0,0))
+			text = font.render('Blue wins', True, (0,0,255))
 		if flag == 1:
-			text = font.render('Red wins', True, (255,0,0), (0,0,255))
+			text = font.render('Red wins', True, (255,0,0))
 		text_rect = text.get_rect()
 		text_rect.center = cen
 		screen.blit(text, text_rect)

@@ -10,7 +10,7 @@ def check_events():
 		if event.type == pygame.KEYUP:
 			check_keyup_events(event)
 		if event.type == pygame.MOUSEBUTTONDOWN:
-			check_mouse_events(settings, event, ball, count)
+			check_mouse_events(event)
 def check_keydown_events(event):
 	if event.key == pygame.K_q:
 		sys.exit()
