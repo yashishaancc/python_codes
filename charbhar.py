@@ -1,5 +1,6 @@
 import pygame
 import sys
+import argparse
 from time import sleep
 from random import randint
 class Settings():
@@ -409,6 +410,10 @@ def run_game():
 	icon_clicked = [False]
 	icon_rect = icon.get_rect()
 	icon_rect.center = (settings.screen_width-12, 12)
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-n')
+	args = parser.parse_args()
+	settings.number_of_players = int(args.n)
 	while True:
 		check_events(settings, screen, centre, red, blue, move, bhar, count,
 			icon, icon_rect, icon_clicked)

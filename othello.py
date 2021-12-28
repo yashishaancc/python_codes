@@ -1,5 +1,6 @@
 import pygame
 import sys
+import argparse
 from random import randint
 class Settings():
 	def __init__(self):
@@ -448,6 +449,10 @@ def run_game():
 	ball[int((r/2-1)*c+c/2)] = 1; ball[int((r/2)*c+c/2+1)] = 1;
 	ball[int((r/2-1)*c+c/2+1)] = 2; ball[int((r/2)*c+c/2)] = 2;
 	count = [0]
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-n')
+	args = parser.parse_args()
+	settings.number_of_players = int(args.n)
 	while True:
 		check_events(settings, ball, count)
 		draw_board(settings, screen, ball, count)
