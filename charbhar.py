@@ -411,7 +411,7 @@ def run_game():
 	icon_rect = icon.get_rect()
 	icon_rect.center = (settings.screen_width-12, 12)
 	parser = argparse.ArgumentParser()
-	parser.add_argument('-n')
+	parser.add_argument('-n', default = 2, help = "Number of players")
 	args = parser.parse_args()
 	settings.number_of_players = int(args.n)
 	while True:

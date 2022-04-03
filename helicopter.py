@@ -64,6 +64,7 @@ def run_game():
 	x = 150
 	y = 200
 	y_move = 0
+	t_move = 0
 	x_block = surfaceWidth
 	y_block = 0
 	block_width = 75
@@ -80,9 +81,12 @@ def run_game():
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_UP:
 					y_move = -5
+					t_move = 0
 			if event.type == pygame.KEYUP:
 				if event.key == pygame.K_UP:
 					y_move = 5
+					t_move += 1
+					y_move += 5*(2*t_move-1)
 		y += y_move
 		surface.fill(black)
 		helicopter(x ,y, img)

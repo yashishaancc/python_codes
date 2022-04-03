@@ -450,9 +450,9 @@ def run_game():
 	ball[int((r/2-1)*c+c/2+1)] = 2; ball[int((r/2)*c+c/2)] = 2;
 	count = [0]
 	parser = argparse.ArgumentParser()
-	parser.add_argument('-n')
+	parser.add_argument('-n', default = 2, help = "Number of players")
 	args = parser.parse_args()
-	settings.number_of_players = int(args.n)
+	settings.number_of_players = int(args.n) if args.n else 2
 	while True:
 		check_events(settings, ball, count)
 		draw_board(settings, screen, ball, count)

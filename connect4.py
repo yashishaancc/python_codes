@@ -172,7 +172,7 @@ def run_game():
 	ball = [0 for i in range(r*c+1)]
 	count = [0]
 	parser = argparse.ArgumentParser()
-	parser.add_argument('-n')
+	parser.add_argument('-n', default = 2, help = "Number of players")
 	args = parser.parse_args()
 	settings.number_of_players = int(args.n)
 	while True:
